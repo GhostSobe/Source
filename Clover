@@ -1,0 +1,422 @@
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "Discord ",
+    SubTitle = "Moon",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false, 
+    Theme = "Amethyst",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "AutoFarm", Icon = "swords" }),
+    NPC = Window:AddTab({ Title = "NPC", Icon = "users" }),
+    TP = Window:AddTab({ Title = "Teleport", Icon = "layers" }),
+    World = Window:AddTab({ Title = "World", Icon = "earth" }),
+    Plr = Window:AddTab({ Title = "Player", Icon = "user" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local Options = Fluent.Options
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+
+local function IsQuest()
+    return player.PlayerGui.WholeUI.Quest.Visible
+end
+
+do
+    Fluent:Notify({
+        Title = "Notification",
+        Content = "This is a notification",
+        SubContent = "SubContent", 
+        Duration = 5 
+    })
+
+    Tabs.Main:AddSection("[ Monster ]")
+
+    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "FarmWeakThugs", Default = false })
+
+    Toggle:OnChanged(function(v)
+        _G.AutoFarmWeakThugs = v
+        while _G.AutoFarmWeakThugs do
+            task.wait()
+            if not IsQuest() then
+                player.Character.HumanoidRootPart.CFrame = Workspace["Orsi Orfai"].HumanoidRootPart.CFrame * CFrame.new(0,0,-3)
+                task.wait()
+                ReplicatedStorage.Remotes.GUIRemotes.getQuest:InvokeServer(1)
+            else
+                repeat
+                    for i,v in pairs(Workspace:GetChildren()) do
+                        if v.Name == "Weak Thugs" and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                            repeat
+                                task.wait()
+                                if v:FindFirstChild("HumanoidRootPart") then
+                                    player.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,3)
+                                    game:service("VirtualUser"):ClickButton1(Vector2.new(0,0), CFrame.new(0,0,0))
+                                end
+                            until v.Humanoid.Health <= 0 or v.Parent ~= Workspace
+                        end
+                    end
+                    task.wait()
+                until not IsQuest()
+            end
+        end
+    end)
+
+    Options.MyToggle:SetValue(false)
+    -------------------------------------
+    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "FarmStrongThugs", Default = false })
+
+    Toggle:OnChanged(function(v)
+        _G.AutoFarmStrongThugs = v
+        while _G.AutoFarmStrongThugs do
+            task.wait()
+            if not IsQuest() then
+                player.Character.HumanoidRootPart.CFrame = workspace.Asta.HumanoidRootPart.CFrame * CFrame.new(0,1,-3)
+                task.wait()
+                ReplicatedStorage.Remotes.GUIRemotes.getQuest:InvokeServer(5)
+            else
+                repeat
+                    for i,v in pairs(Workspace:GetChildren()) do
+                        if v.Name == "Strong Thugs" and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                            repeat
+                                task.wait()
+                                if v:FindFirstChild("HumanoidRootPart") then
+                                    player.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,3)
+                                    game:service("VirtualUser"):ClickButton1(Vector2.new(0,0), CFrame.new(0,0,0))
+                                end
+                            until v.Humanoid.Health <= 0 or v.Parent ~= Workspace
+                        end
+                    end
+                    task.wait()
+                until not IsQuest()
+            end
+        end
+    end)
+
+    Options.MyToggle:SetValue(false)
+-------------------------------------
+    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "FarmMonOre", Default = false })
+
+    Toggle:OnChanged(function(v)
+        _G.AutoFarmMonOre = v
+        while _G.AutoFarmMonOre do
+            task.wait()
+            if not IsQuest() then
+                player.Character.HumanoidRootPart.CFrame = workspace.Miner.HumanoidRootPart.CFrame * CFrame.new(0,0,-3)
+                task.wait()
+                ReplicatedStorage.Remotes.GUIRemotes.getQuest:InvokeServer(9)
+            else
+                repeat
+                    for i,v in pairs(Workspace:GetChildren()) do
+                        if v.Name == "Orc" and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                            repeat
+                                task.wait()
+                                if v:FindFirstChild("HumanoidRootPart") then
+                                    player.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,3)
+                                    game:service("VirtualUser"):ClickButton1(Vector2.new(0,0), CFrame.new(0,0,0))
+                                end
+                            until v.Humanoid.Health <= 0 or v.Parent ~= Workspace
+                        end
+                    end
+                    task.wait()
+                until not IsQuest()
+            end
+        end
+    end)
+
+    Options.MyToggle:SetValue(false)
+    -------------------------------------
+
+    Tabs.Main:AddSection("[ Farm ]")
+
+    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "FarmWheat", Default = false })
+
+    Toggle:OnChanged(function(v)
+        _G.AutoFarmWheat = v
+        while _G.AutoFarmWheat do
+            task.wait(0.1)
+            local char = player.Character or player.CharacterAdded:Wait()
+            local hrp = char:WaitForChild("HumanoidRootPart")
+            local Hoe = char:FindFirstChild("Hoe") or player.Backpack:FindFirstChild("Hoe")
+            if not Hoe then
+                ReplicatedStorage:WaitForChild("buyHoe"):FireServer()
+            else
+                for i,v in pairs(Workspace:GetChildren()) do
+                    if not _G.AutoFarmWheat then break end 
+                    if v.Name == "Wheat" and v:FindFirstChild("MainPart") and v:FindFirstChild("OrigCFrame") and v:FindFirstChild("Health") then
+                        if v.Health.Value > 0 then
+                            hrp.CFrame = v.OrigCFrame.Value * CFrame.new(0, 3, 0)
+                            while _G.AutoFarmWheat and v.Parent == Workspace and v.Health.Value > 0 do
+                                ReplicatedStorage:WaitForChild("JobRemotes"):WaitForChild("Farming"):FireServer(v.MainPart)
+                                task.wait(0.2)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end)
+
+    Options.MyToggle:SetValue(false)
+    -------------------------------------
+    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "FarmOre", Default = false })
+
+    Toggle:OnChanged(function(v)
+        _G.AutoFarmOre = v
+        while _G.AutoFarmOre do
+            task.wait()
+            local Pickaxe = player.Character:FindFirstChild("Pickaxe") or player.Backpack:FindFirstChild("Pickaxe")
+            if not Pickaxe then
+                game:GetService("ReplicatedStorage"):WaitForChild("buyPickaxe"):FireServer()
+            else
+                for i,v in pairs(Workspace:GetChildren()) do
+                    if v:FindFirstChild("MoveHere") then
+                        local movePart = v.MoveHere
+                        repeat
+                            task.wait()
+                            player.Character.HumanoidRootPart.CFrame = movePart.CFrame * CFrame.new(0, 3, 0)
+                            ReplicatedStorage:WaitForChild("JobRemotes"):WaitForChild("Mining"):FireServer(movePart)
+                        until v.Parent ~= Workspace or not _G.AutoFarmOre
+                    end
+                end
+            end
+        end
+    end)
+
+    Options.MyToggle:SetValue(false)
+    -------------------------------------
+    Tabs.NPC:AddSection("[ NPC ]")
+
+    Tabs.NPC:AddButton({
+        Title = "Jin",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace.Jin.ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.NPC:AddButton({
+        Title = "Black Market Seller",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace["Black Market Seller"].ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.NPC:AddButton({
+        Title = "Luck",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace.Luck.ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.NPC:AddButton({
+        Title = "Nozel",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace.Nozel.ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.NPC:AddButton({
+        Title = "Martial Artist",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace["Martial Artist"].ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.NPC:AddButton({
+        Title = "Yami",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace.Yami.ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.NPC:AddButton({
+        Title = "Hair Stylist",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace["Hair Stylist"].ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.NPC:AddButton({
+        Title = "Drouot",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace.Drouot.ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.NPC:AddButton({
+        Title = "Magic Apprentice",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace["Magic Apprentice"].ClickDetector)
+        end
+    })
+    -------------------------------------
+    Tabs.TP:AddSection("[ Teleport ]")
+
+    Tabs.TP:AddButton({
+        Title = "Statue",
+        Description = "Click To Teleport",
+        Callback = function()
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-1543.62488, -5.83366966, -47.4996681, 0.044725202, -1.01234939e-07, 0.998999357, 5.12973273e-08, 1, 9.90397666e-08, -0.998999357, 4.6816421e-08, 0.044725202)
+        end
+    })
+    -------------------------------------
+    Tabs.TP:AddButton({
+        Title = "Mine",
+        Description = "Click To Teleport",
+        Callback = function()
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(-1631.74268, -10.8148909, -910.570984, -0.999830365, 2.16560743e-08, 0.0184187107, 2.03903543e-08, 1, -6.89071342e-08, -0.0184187107, -6.85198813e-08, -0.999830365)
+        end
+    })
+    -------------------------------------
+    Tabs.TP:AddButton({
+        Title = "Place of worship",
+        Description = "Click To Teleport",
+        Callback = function()
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(172.321777, -9.98635006, 40.0678406, -0.130949989, 4.97751635e-08, -0.991388977, 1.79745516e-08, 1, 4.78332893e-08, 0.991388977, -1.15560042e-08, -0.130949989)
+        end
+    })
+    -------------------------------------
+    Tabs.Plr:AddSection("[ Player Stats ]")
+
+    local speedValue = 16
+    local isSpeedEnabled = false 
+
+    local Slider = Tabs.Plr:AddSlider("Slider", {
+        Title = "Select Speed",
+        Description = "",
+        Default = 16,
+        Min = 0,
+        Max = 100,
+        Rounding = 1,
+        Callback = function(Value)
+            speedValue = Value 
+            if isSpeedEnabled then
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speedValue
+            end
+        end
+    })
+
+    local Toggle = Tabs.Plr:AddToggle("MyToggle", {Title = "Open", Default = false})
+
+    Toggle:OnChanged(function(v)
+        isSpeedEnabled = v
+        if v then
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speedValue
+        else
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        end
+    end)
+
+    Options.MyToggle:SetValue(false)
+
+    -------------------------------------
+
+    local jumpPowerValue = 50
+    local isJumpEnabled = false
+
+    local JumpSlider = Tabs.Plr:AddSlider("JumpSlider", {
+        Title = "Select JumpPower",
+        Description = "",
+        Default = 50,
+        Min = 0,
+        Max = 200,
+        Rounding = 1,
+        Callback = function(Value)
+            jumpPowerValue = Value
+            if isJumpEnabled then
+                game.Players.LocalPlayer.Character.Humanoid.JumpPower = jumpPowerValue
+            end
+        end
+    })
+
+    local JumpToggle = Tabs.Plr:AddToggle("JumpToggle", {Title = "Open", Default = false})
+    JumpToggle:OnChanged(function(v)
+        isJumpEnabled = v
+        local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            if v then
+                humanoid.JumpPower = jumpPowerValue
+            else
+                humanoid.JumpPower = 50 
+            end
+        end
+    end)
+    Options.JumpToggle:SetValue(false)
+
+    -------------------------------------
+
+    Tabs.World:AddSection("[ World ]")
+--workspace["Forsaken Realm"].ClickDetector
+    Tabs.World:AddButton({
+        Title = "Commoner's Realm",
+        Description = "",
+        Callback = function()
+            fireclickdetector(workspace["Commoner's Realm"].ClickDetector)
+        end
+    })
+end
+
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/specific-game")
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+local CoreGui = game:GetService("CoreGui")
+local logoGui = Instance.new("ScreenGui")
+logoGui.Name = "GhostHubLogoGui"
+logoGui.ResetOnSpawn = false
+logoGui.Parent = CoreGui
+
+local logoButton = Instance.new("ImageButton")
+logoButton.Name = "LogoButton"
+logoButton.Size = UDim2.new(0, 60, 0, 60)
+logoButton.Position = UDim2.new(0, 45, 0, 40)
+logoButton.BackgroundTransparency = 1
+logoButton.Image = "rbxassetid://112944191767343"
+logoButton.Parent = logoGui
+logoButton.ZIndex = 999
+
+local isOpen = true
+
+local function getFluentGui()
+    return CoreGui:FindFirstChild("ScreenGui")
+end
+
+logoButton.MouseButton1Click:Connect(function()
+    isOpen = not isOpen
+    local fluentGui = getFluentGui()
+    if fluentGui then
+        fluentGui.Enabled = isOpen 
+        local blur = game:GetService("Lighting"):FindFirstChildOfClass("BlurEffect")
+        if blur then
+            blur.Enabled = isOpen
+        end
+    end
+end)
+
+Window:SelectTab(1)
+SaveManager:LoadAutoloadConfig()
