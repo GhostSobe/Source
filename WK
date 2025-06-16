@@ -52,5 +52,5 @@ local newdata = game:GetService("HttpService"):JSONEncode(data)
 
 local headers = {["content-type"] = "application/json"}
 request = http_request or request or HttpPost
-local Ghost = {Url = _G.url, Body = newdata, Method = "POST", Headers = headers}
+local Ghost = {Url = url, Body = newdata, Method = "POST", Headers = headers}
 request(Ghost)
