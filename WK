@@ -5,11 +5,12 @@ local JobId = game.JobId
 local NamePlayer = game.Players.LocalPlayer.Name
 
 local data = {
-    username = "Notify",
+    username = "Notify Webhook",
     avatar_url = "https://cdn.discordapp.com/attachments/1377314040660885634/1380656686322290698/Discord.png?ex=6851327d&is=684fe0fd&hm=409125d297831068d7ffef8f0c532598d266ed4eb20de974a10c65766b75b53b&",
     content = nil,
     embeds = {
         {
+            title = "__Account Information__",
             color = 9164802,
             fields = {
                 {
