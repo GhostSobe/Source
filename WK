@@ -34,7 +34,7 @@ local data = {
                     value = ("```%s```"):format(JobId)
                 },
                 {
-                    name = "**JobId Tepeport**",
+                    name = "**Tp JobId**",
                     value = ('```game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, "%s", game.Players.LocalPlayer)```'):format(JobId)
                 }
             },
