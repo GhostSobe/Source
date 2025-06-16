@@ -1,0 +1,56 @@
+local Map = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+local UserId = game.Players.LocalPlayer.UserId
+local PlaceId = game.PlaceId
+local JobId = game.JobId
+local NamePlayer = game.Players.LocalPlayer.Name
+
+local data = {
+    username = "Notify",
+    avatar_url = "https://cdn.discordapp.com/attachments/1377314040660885634/1380656686322290698/Discord.png?ex=6851327d&is=684fe0fd&hm=409125d297831068d7ffef8f0c532598d266ed4eb20de974a10c65766b75b53b&",
+    content = nil,
+    embeds = {
+        {
+            color = 9164802,
+            fields = {
+                {
+                    name = "**Player Name**",
+                    value = ("```%s```"):format(NamePlayer)
+                },
+                {
+                    name = "**UserId**",
+                    value = ("```%s```"):format(UserId)
+                },
+                {
+                    name = "**Map**",
+                    value = ("```%s```"):format(Map)
+                },
+                {
+                    name = "**Place Id**",
+                    value = ("```%s```"):format(PlaceId)
+                },
+                {
+                    name = "**JobId**",
+                    value = ("```%s```"):format(JobId)
+                }
+            },
+            author = {
+                name = "Notify",
+                icon_url = "https://media.discordapp.net/attachments/1365225828589240351/1382809487542321315/ChatGPT_Image_6_.._2568_02_30_04.png?ex=68511e71&is=684fccf1&hm=7e8d78b93036bc9d57a41122037549788bd59d25b3f112cfc6d3380184771bdf&=&format=webp&quality=lossless&width=815&height=815"
+            },
+            footer = {
+                text = "Notify By.Moon"
+            },
+            timestamp = DateTime.now():ToIsoDate()
+        }
+    },
+    attachments = {}
+}
+
+
+
+local newdata = game:GetService("HttpService"):JSONEncode(data)
+
+local headers = {["content-type"] = "application/json"}
+request = http_request or request or HttpPost
+local Ghost = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+request(Ghost)
