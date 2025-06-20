@@ -12,7 +12,6 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl 
 })
 
---Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
@@ -23,7 +22,6 @@ local player = game:GetService("Players")
 local LocalPlayer = player.LocalPlayer
 
 local tab = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"}
---Tabs.Main:AddSection("[ Auto ]")
 
 do
     Tabs.Main:AddSection("[ Npc ]")
@@ -34,8 +32,6 @@ do
         Multi = false,
         Default = nil,
     })
-
-    --Dropdown:SetValue("four")
 
     Dropdown:OnChanged(function(Value)
         Teleport = Value
@@ -56,7 +52,6 @@ do
             end
         end
     })
-
 end
 
 SaveManager:SetLibrary(Fluent)
@@ -66,46 +61,43 @@ SaveManager:SetIgnoreIndexes({})
 InterfaceManager:SetFolder("FluentScriptHub")
 SaveManager:SetFolder("FluentScriptHub/specific-game")
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
---SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
-local StarterGui = game:GetService("StarterGui")
+
+SaveManager:LoadAutoloadConfig()
+
+-- === เริ่มสร้างโลโก้ GhostHub ใน ScreenGui ของ Fluent ===
 local CoreGui = game:GetService("CoreGui")
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
+local Lighting = game:GetService("Lighting")
 
+task.wait(1) -- รอให้ Fluent สร้าง UI เสร็จก่อน
 
-local logoGui = Instance.new("ScreenGui")
-logoGui.Name = "GhostHub"
-logoGui.ResetOnSpawn = false
-logoGui.Parent = CoreGui
+-- หา ScreenGui ของ Fluent (โดยการหา ScreenGui ใดก็ได้ใน CoreGui)
+local fluentGui = CoreGui:FindFirstChildWhichIsA("ScreenGui")
+if fluentGui then
+    local logoGui = Instance.new("ScreenGui")
+    logoGui.Name = "GhostHub"
+    logoGui.ResetOnSpawn = false
+    logoGui.Parent = fluentGui -- วางไว้ใน ScreenGui ของ Fluent
 
-local logoButton = Instance.new("ImageButton")
-logoButton.Name = "LogoButton"
-logoButton.Size = UDim2.new(0, 70, 0, 70)
-logoButton.Position = UDim2.new(0, 65, 0, 50)
-logoButton.BackgroundTransparency = 1
-logoButton.Image = "rbxassetid://96080169937759"
-logoButton.Parent = logoGui
-logoButton.ZIndex = 999
+    local logoButton = Instance.new("ImageButton")
+    logoButton.Name = "LogoButton"
+    logoButton.Size = UDim2.new(0, 70, 0, 70)
+    logoButton.Position = UDim2.new(0, 65, 0, 50)
+    logoButton.BackgroundTransparency = 1
+    logoButton.Image = "rbxassetid://96080169937759"
+    logoButton.Parent = logoGui
+    logoButton.ZIndex = 999
 
-local fluentGuiName = Window.Title -- ใช้ Title ที่ตั้งไว้ตอนสร้าง Window
-local isOpen = true
+    local isOpen = true
 
-local function getFluentGui()
-    return CoreGui:FindFirstChild("ScreenGui")
-end
+    logoButton.MouseButton1Click:Connect(function()
+        isOpen = not isOpen
+        fluentGui.Enabled = isOpen
 
-logoButton.MouseButton1Click:Connect(function()
-    isOpen = not isOpen
-    local fluentGui = getFluentGui()
-    if fluentGui then
-        fluentGui.Enabled = isOpen -- ใช้ Enabled กับ ScreenGui
-        -- ปิด/เปิด BlurEffect ที่ Fluent UI สร้างไว้
-        local blur = game:GetService("Lighting"):FindFirstChildOfClass("BlurEffect")
+        local blur = Lighting:FindFirstChildOfClass("BlurEffect")
         if blur then
             blur.Enabled = isOpen
         end
-    end
-end)
-
-SaveManager:LoadAutoloadConfig()
+    end)
+end
+-- === จบส่วนโลโก้ ===
