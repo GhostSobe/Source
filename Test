@@ -88,23 +88,18 @@ logoButton.Image = "rbxassetid://96080169937759"
 logoButton.Parent = logoGui
 logoButton.ZIndex = 999
 
-local fluentGuiName = Window.Title -- ใช้ Title ที่ตั้งไว้ตอนสร้าง Window
 local isOpen = true
-
-local function getFluentGui()
-    return CoreGui:FindFirstChild("ScreenGui")
-end
 
 logoButton.MouseButton1Click:Connect(function()
     isOpen = not isOpen
-    local fluentGui = getFluentGui()
+    local fluentGui = CoreGui:FindFirstChild("ScreenGui")
     if fluentGui then
         fluentGui.Enabled = isOpen -- ใช้ Enabled กับ ScreenGui
         -- ปิด/เปิด BlurEffect ที่ Fluent UI สร้างไว้
-        local blur = game:GetService("Lighting"):FindFirstChildOfClass("BlurEffect")
-        if blur then
-            blur.Enabled = isOpen
-        end
+        -- local blur = game:GetService("Lighting"):FindFirstChildOfClass("BlurEffect")
+        -- if blur then
+        --     blur.Enabled = isOpen
+        -- end
     end
 end)
 
