@@ -1,0 +1,111 @@
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "test",
+    SubTitle = "by dawid",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.RightControl 
+})
+
+--Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main", Icon = "" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local Options = Fluent.Options
+local player = game:GetService("Players")
+local LocalPlayer = player.LocalPlayer
+
+local tab = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"}
+--Tabs.Main:AddSection("[ Auto ]")
+
+do
+    Tabs.Main:AddSection("[ Npc ]")
+
+    local Dropdown = Tabs.Main:AddDropdown("Dropdown", {
+        Title = "Dropdown",
+        Values = tab,
+        Multi = false,
+        Default = nil,
+    })
+
+    --Dropdown:SetValue("four")
+
+    Dropdown:OnChanged(function(Value)
+        Teleport = Value
+    end)
+
+    Tabs.Main:AddButton({
+        Title = "Button",
+        Description = "Very important button",
+        Callback = function()
+            if Teleport == "one" then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 100, 0)
+            elseif Teleport == "two" then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100, 0, 0)
+            elseif Teleport == "three" then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0, 100)
+            elseif Teleport == "four" then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100, 100, 0)
+            end
+        end
+    })
+
+end
+
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({})
+InterfaceManager:SetFolder("FluentScriptHub")
+SaveManager:SetFolder("FluentScriptHub/specific-game")
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+--SaveManager:BuildConfigSection(Tabs.Settings)
+Window:SelectTab(1)
+local StarterGui = game:GetService("StarterGui")
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+
+local logoGui = Instance.new("ScreenGui")
+logoGui.Name = "GhostHub"
+logoGui.ResetOnSpawn = false
+logoGui.Parent = CoreGui
+
+local logoButton = Instance.new("ImageButton")
+logoButton.Name = "LogoButton"
+logoButton.Size = UDim2.new(0, 70, 0, 70)
+logoButton.Position = UDim2.new(0, 65, 0, 50)
+logoButton.BackgroundTransparency = 1
+logoButton.Image = "rbxassetid://96080169937759"
+logoButton.Parent = logoGui
+logoButton.ZIndex = 999
+
+local fluentGuiName = Window.Title -- ใช้ Title ที่ตั้งไว้ตอนสร้าง Window
+local isOpen = true
+
+local function getFluentGui()
+    return CoreGui:FindFirstChild("ScreenGui")
+end
+
+logoButton.MouseButton1Click:Connect(function()
+    isOpen = not isOpen
+    local fluentGui = getFluentGui()
+    if fluentGui then
+        fluentGui.Enabled = isOpen -- ใช้ Enabled กับ ScreenGui
+        -- ปิด/เปิด BlurEffect ที่ Fluent UI สร้างไว้
+        local blur = game:GetService("Lighting"):FindFirstChildOfClass("BlurEffect")
+        if blur then
+            blur.Enabled = isOpen
+        end
+    end
+end)
+
+SaveManager:LoadAutoloadConfig()
